@@ -1,0 +1,104 @@
+Part 1
+
+(5 + 6 + 8 * (5 * 2 * 7 * 2) + 2) + 3
+
+Parse expression from left, creating expression objects based on number of opening ( or closing ) brackets encountered (n)
+Track highest n reached
+
+n := 0
+
+n = 1
+e = ["5", "+", "6", "+", "8", "*"]
+...
+
+When n changes, add to an array in l to r order
+
+[
+	{n: 1, e: [5,+,6,+,8,*]},
+	{n: 2, e: [5,*,2,*,7,*,2]},
+	{n: 1, e: [+,2]},
+	{n: 0, e: [+,3]},
+]
+
+Evaluate
+
+Highest n = 2
+
+For each n == 2, l to r, evaluate e
+
+[
+	{n: 1, e: [5,+,6,+,8,*]},
+	{n: 2, e: [140]},
+	{n: 1, e: [+,2]},
+	{n: 0, e: [+,3]},
+]
+
+Drop the n: for evaluated expressions
+
+[
+	{n: 1, e: [5,+,6,+,8,*]},
+	{n: 1, e: [140]},
+	{n: 1, e: [+,2]},
+	{n: 0, e: [+,3]},
+]
+
+Collapse adjacent same ns to the left
+
+[
+	{n: 1, e: [5,+,6,+,8,*]},
+	{n: 1, e: [140,+,2]},
+	{n: 0, e: [+,3]},
+]
+
+[
+	{n: 1, e: [5,+,6,+,8,*,140,+,2]},
+	{n: 0, e: [+,3]},
+]
+
+While highest n > 1, or len > 1 repeat
+Highest n = 1
+
+[
+	{n: 1, e: [2662]},
+	{n: 0, e: [+,3]},
+]
+
+[
+	{n: 0, e: [2662]},
+	{n: 0, e: [+,3]},
+]
+
+[
+	{n: 0, e: [2662,+,3]},
+]
+
+Highest n = 0
+
+[
+	{n: 0, e: [2665]},
+]
+
+
+
+
+Part 2
+
+Should all be the same if the new precedence is only considered in 'evaluateExpression'
+
+[
+	{n: 1, e: [5,+,6,+,8,*]},
+	{n: 2, e: [5,+,2,*,7,+,2]},
+	{n: 1, e: [+,2]},
+	{n: 0, e: [+,3]},
+]
+
+Evaluating {n: 2, e: [5,+,2,*,7,+,2]}
+
+Evaluate all additions first, mutating e each time
+
+{n: 2, e: [7,*,7,+,2]}
+{n: 2, e: [7,*,9]}
+
+then evaluate all products if len(e)>1
+
+{n: 2, e: [63]}
